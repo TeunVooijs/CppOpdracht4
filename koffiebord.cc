@@ -21,8 +21,27 @@ koffiebord::~koffiebord ( ) {
 }//koffiebord::~koffiebord
 
 void koffiebord::drukaf ( ) {
-  cout << "Een koffiebord ziet er mooi uit." << endl;
+  cout << "Een koffiebord " << endl;
   // TODO
 }//koffiebord::drukaf
+
+void koffiebord::voegvoor(){
+
+
+
+  
+}
+
+void koffiebord::zet(){
+
+
+
+}
+
+void koffiebord::czet(){
+
+
+
+}
 
 // TODO
