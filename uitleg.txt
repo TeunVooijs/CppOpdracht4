@@ -1,0 +1,2 @@
+Bij delete q vernietig je hetgene waar q naar wijst
+Maar eigenlijk maakt hij pointer q vrij
