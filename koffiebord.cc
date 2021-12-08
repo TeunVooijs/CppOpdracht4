@@ -1,4 +1,3 @@
-// file koffiebord.cc
 #include <ctime>
 #include "stdlib.h"
 #include <iostream>
@@ -24,6 +23,8 @@ bordvakje::bordvakje ( ) {
 koffiebord::koffiebord ( ) {
   ingang = nullptr;
   vorige = nullptr;
+  afmetingen();
+  bouwbord();
 
 
 
@@ -70,7 +71,6 @@ bordvakje* koffiebord::readcoord(int i, int j){ // i = x-as j = y-as
   int verschil=i-j;
   bordvakje* mover;
   mover = ingang;
-
 // als er een verschil is verplaatst het eerst het aantal stappen dat
 // overlapt schuin 
 // verschil=i-j
@@ -99,7 +99,6 @@ bordvakje* koffiebord::readcoord(int i, int j){ // i = x-as j = y-as
       mover = mover -> buren[3];
     }
   }
-
   mover -> marked = true;
   return 0;
 }
@@ -140,12 +139,6 @@ void koffiebord::verwijder_bord(){
     hulp_verwijder = hulp_verwijder -> buren[0];
     delete verwijderaar;
   }
-  
-  
-  
-
-
-
 }
 
 void koffiebord::checker(){
@@ -165,21 +158,14 @@ void koffiebord::checker(){
   
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Voor opvragen hoogte en breedte
 void koffiebord::afmetingen(){
-  
+  cout << "Hoogte: ";
+  hoogte = read_num(2);
+  cout << "Breedte: ";
+  breedte = read_num(2);
+  cout << "Percentage gevuld: ";
+  percentage = read_num(2);
 
 
 
@@ -191,7 +177,6 @@ void koffiebord::maakrij(){
   bordvakje* p;
   bordvakje* hulp;
   int a=1;
-  breedte=6;
   vorige = ingang;
   hulp = nullptr;
   
@@ -212,7 +197,6 @@ void koffiebord::maakrij(){
 }
 
 void koffiebord::bouwbord(){
-  hoogte=3;
   for (int i = 0; i < hoogte; i++){
     maakrij();
     ritsen();
@@ -281,6 +265,12 @@ void koffiebord::speelbord(){
 
 }
 
+void koffiebord::koffies(){
+
+
+
+
+}
 
 
 void koffiebord::zet(){

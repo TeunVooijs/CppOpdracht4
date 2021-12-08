@@ -40,7 +40,6 @@ int read_num(int aantal){
     char kar='\0';
     int numkar;
     bool firstnum=false;
-    cout << "Geef getal: ";
     while (kar!='\n')
     {
         kar=cin.get();
@@ -57,16 +56,6 @@ int read_num(int aantal){
 }
 
 
-// int main () {
-//   koffiebord bla;
-  
-  
-//   bla.bouwbord();
-//   bla.speelbord();
-//   bla.drukaf();
-//   return 0;
-// }//main
-
 bool menu(koffiebord & player_koffiebord){
     int arr[2];
     cout << "Type de letter die tussen de haakjes staat om het uit te voeren" << endl <<
@@ -74,13 +63,13 @@ bool menu(koffiebord & player_koffiebord){
     "(R)andom, (T)oggle, g(L)idergun, (E)en generatie, (G)a meerdere, (W/A/Z/D) bewegen cursor: ";
     
     read_char(arr);
+    // player_koffiebord.bouwbord();
     
     switch (arr[0]){
     case 's': case 'S':
         return true;    
         break;
     case 'h': case 'H':
-        player_koffiebord.bouwbord();
         // player_koffiebord.speelbord();
         // player_koffiebord.drukaf();
         break;
@@ -124,8 +113,8 @@ int main(){
     
     while (true){
         // main_koffiebord.legenda();
-        if (menu(main_koffiebord)){return 0;} 
         main_koffiebord.drukaf();
+        if (menu(main_koffiebord)){return 0;} 
     }
     return 0;
 }

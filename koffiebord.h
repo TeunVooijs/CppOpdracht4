@@ -1,5 +1,3 @@
-// file koffiebord.h
-
 void read_char(int arr[]);
 int read_num(int aantal);
 
@@ -25,8 +23,8 @@ private: // voor moeilijke zooi
   bool klaar();
   void afmetingen();
   void ritsen();
-  
-  int hoogte, breedte;
+  void koffies();
+  int hoogte, breedte, percentage;
   int countk; int steps;
   
   

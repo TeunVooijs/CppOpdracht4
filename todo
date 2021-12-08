@@ -1,5 +1,2 @@
-bordvakjes ook naar zijburen wijzen
-
-printen van het veld
-
-veld mines geven en dan aantal mines bij buren ophogen
+Maak de functie die random mines neerlegd door rand te gebruiken voor x en y as
+leg ze neer en doe alle buren gelijk +1
