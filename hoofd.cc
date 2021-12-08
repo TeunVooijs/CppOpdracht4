@@ -82,8 +82,8 @@ bool menu(koffiebord & player_koffiebord){
     case 'v': case 'V':
         player_koffiebord.verwijder_bord();
         break;
-    // case 't': case 'T':
-    //     player_koffiebord.toggle();
+    // case 'o': case 'O':
+    //     player_koffiebord.open();
     //     break;
     // case 'e': case 'E':
     //     player_koffiebord.een();

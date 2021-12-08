@@ -8,9 +8,9 @@ using namespace std;
 
 bordvakje::bordvakje ( ) {
   srand(time(NULL));
-  geopend = false;
+  geopend = true;
   marked = false;
-  // aantal_buren = 1;
+  aantal_buren = 0;
 
   for (int i = 0; i < 8; i++){
     buren[i]=nullptr;
@@ -25,6 +25,7 @@ koffiebord::koffiebord ( ) {
   vorige = nullptr;
   afmetingen();
   bouwbord();
+  koffies();
 
 
 
@@ -44,14 +45,16 @@ void koffiebord::drukaf ( ) {
   for (int i = 0; i < hoogte; i++){
     for (int j = 0; j < breedte; j++){
       if(hulp){
-        if(!hulp -> marked){
+        if(!hulp -> geopend){
           cout << ". ";
         }
-        else{
+        else if(hulp -> geopend == true && hulp -> marked == true){
           cout << "X ";
         }
+        else if (hulp -> geopend == true && hulp -> marked == false){
+          cout << hulp -> aantal_buren << " ";
+        }
       }
-      // cout << hulp -> aantal_buren << " ";
       hulp = hulp -> buren[2];
     }
 
@@ -66,6 +69,8 @@ void koffiebord::drukaf ( ) {
     cout << "is leeg" << endl;
   }
 }//koffiebord::drukaf
+
+
 
 bordvakje* koffiebord::readcoord(int i, int j){ // i = x-as j = y-as
   int verschil=i-j;
@@ -99,21 +104,25 @@ bordvakje* koffiebord::readcoord(int i, int j){ // i = x-as j = y-as
       mover = mover -> buren[3];
     }
   }
-  mover -> marked = true;
-  return 0;
+  // mover -> marked = true;
+  return mover;
 }
+
+
 
 void koffiebord::open(){
   int xcord;
   int ycord;
 
-  cout << "Geef de x coordinaat van het vakje dat je wil openen";
+  cout << "Geef de x coordinaat van het vakje dat je wil openen: ";
   xcord=read_num(2);
-  cout << "Geef de y coordinaat van het vakje dat je wil openen";
+  cout << "Geef de y coordinaat van het vakje dat je wil openen: ";
   ycord=read_num(2);
 
   readcoord(xcord,ycord);
 }
+
+
 
 void koffiebord::verwijder_bord(){
   bordvakje* verwijderaar;
@@ -141,6 +150,8 @@ void koffiebord::verwijder_bord(){
   }
 }
 
+
+
 void koffiebord::checker(){
   bordvakje* koffiechecker=ingang;
 
@@ -161,14 +172,41 @@ void koffiebord::checker(){
 // Voor opvragen hoogte en breedte
 void koffiebord::afmetingen(){
   cout << "Hoogte: ";
-  hoogte = read_num(2);
+  hoogte = read_num(4);
   cout << "Breedte: ";
-  breedte = read_num(2);
+  breedte = read_num(4);
   cout << "Percentage gevuld: ";
   percentage = read_num(2);
 
+}
 
 
+void koffiebord::koffies(){
+  srand(time(0));
+  int xkoffie,ykoffie;
+  int aantalkoffies, controle=0;
+  bordvakje* schenker;
+
+
+  aantalkoffies=(percentage*hoogte*breedte)/100;
+  
+  while (aantalkoffies!=controle){
+    xkoffie=rand() % (breedte);
+    ykoffie=rand() % (hoogte);
+    schenker = readcoord(xkoffie,ykoffie);
+    
+    if (schenker -> marked == false){
+      schenker -> marked = true;
+      
+      for (int h = 0; h < 8; h++){
+        if (schenker -> buren[h]){
+          schenker -> buren[h] -> aantal_buren++;
+        }
+      }
+      controle++;
+    } 
+
+  }
 }
 
 
@@ -176,14 +214,12 @@ void koffiebord::afmetingen(){
 void koffiebord::maakrij(){    
   bordvakje* p;
   bordvakje* hulp;
-  int a=1;
   vorige = ingang;
   hulp = nullptr;
   
 
   for (int i = 0; i < breedte; i++){
     p = new bordvakje;
-    p -> aantal_buren=a;         
 
     p -> buren[2] = hulp;
 
@@ -265,12 +301,7 @@ void koffiebord::speelbord(){
 
 }
 
-void koffiebord::koffies(){
 
-
-
-
-}
 
 
 void koffiebord::zet(){
