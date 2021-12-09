@@ -77,7 +77,9 @@ bool menu(koffiebord & player_koffiebord){
         // player_koffiebord.readcoord();
         break;
     case 'c': case 'C':
-        player_koffiebord.open();
+        player_koffiebord.zet();
+        player_koffiebord.checker();
+        // player_koffiebord.checker();
         break;
     case 'v': case 'V':
         player_koffiebord.verwijder_bord();
@@ -115,6 +117,7 @@ int main(){
         // main_koffiebord.legenda();
         main_koffiebord.drukaf();
         if (menu(main_koffiebord)){return 0;} 
+        // main_koffiebord.checker();
     }
     return 0;
 }

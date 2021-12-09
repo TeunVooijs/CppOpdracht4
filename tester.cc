@@ -2,12 +2,21 @@
 using namespace std;
 
 int main(){
-  int* p;
+  int x=8;
+  int y=2;
 
-  cout << *p << endl;
-
+  while (x!=5){
+    if(y!=4){
+      y++;
+    }
+    else if(y==4){
+      x=5;
+    }
+    
+    cout << "test" << endl;
+  }
+  
   return 0;
-
 
 
 }

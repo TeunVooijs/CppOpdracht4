@@ -1,2 +1,13 @@
 Maak de functie die random mines neerlegd door rand te gebruiken voor x en y as
 leg ze neer en doe alle buren gelijk +1
+
+
+
+
+
+while loop kijkt naar laatste getal als gegeven in loop
+Loop door hele veld heen per rij
+kijk of er een 0 is die dichte buren heeft
+open dan alle buren en geen waarde ++
+blijf loopen door de hele map met dubbele while loop
+als waarde gelijk is aan 0 zal alles gedaan zijn
