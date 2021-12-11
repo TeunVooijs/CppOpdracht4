@@ -7,8 +7,8 @@ using namespace std;
 
 
 bordvakje::bordvakje ( ) {
-  srand(time(NULL));
   geopend = false;
+  flag = false;
   marked = false;
   aantal_buren = 0;
 
@@ -21,13 +21,16 @@ bordvakje::bordvakje ( ) {
 }//bordvakje::bordvakje
 
 koffiebord::koffiebord ( ) {
+  srand(time(NULL));
   ingang = nullptr;
   vorige = nullptr;
   afmetingen();
   bouwbord();
   koffies();
-
-
+  zetten=0;
+  gesloten_vakjes=0;
+  aantal_vakjes= breedte * hoogte;
+  
 
 }//koffiebord::koffiebord
 
@@ -39,20 +42,45 @@ void koffiebord::drukaf ( ) {
   bordvakje* hulp;
   bordvakje* start;
   start = ingang;
-  
   hulp = start;
-  if(hulp){
+  cout << "   ";
+  for (int i = 0; i < breedte; i++){
+    if (i < 10){
+      cout << i << "  ";
+    }
+    else{
+      cout << i << " ";
+    }
+  }
+  cout << endl;
+  
+  // if(hulp){
   for (int i = 0; i < hoogte; i++){
+    if(i<10){
+      cout << i << "  ";
+    }
+    else{
+      cout << i << " ";
+    }
     for (int j = 0; j < breedte; j++){
+      
       if(hulp){
-        if(!hulp -> geopend){
-          cout << ". ";
+        if (hulp -> flag == true){
+          cout << "F  ";
         }
-        else if(hulp -> geopend == true && hulp -> marked == true){
-          cout << "X ";
+        else if(!hulp -> geopend){
+          cout << "#  ";
+        }
+        else if(hulp ->  geopend == true && hulp -> marked == true){
+          cout << "X  ";
         }
         else if (hulp -> geopend == true && hulp -> marked == false){
-          cout << hulp -> aantal_buren << " ";
+          if (hulp -> aantal_buren == 0){
+            cout << ".  ";
+          }
+          else{
+            cout << hulp -> aantal_buren << "  ";
+          }
         }
       }
       hulp = hulp -> buren[2];
@@ -64,10 +92,8 @@ void koffiebord::drukaf ( ) {
     
     hulp = start;
     cout << endl;
-  }}
-  else{
-    cout << "is leeg" << endl;
   }
+  // }
 }//koffiebord::drukaf
 
 
@@ -110,145 +136,51 @@ bordvakje* koffiebord::readcoord(int i, int j){ // i = x-as j = y-as
 
 
 
-void koffiebord::open(){
-  int xcord;
-  int ycord;
 
-  cout << "Geef de x coordinaat van het vakje dat je wil openen: ";
-  xcord=read_num(2);
-  cout << "Geef de y coordinaat van het vakje dat je wil openen: ";
-  ycord=read_num(2);
 
-  readcoord(xcord,ycord);
+// void koffiebord::verwijder_bord(){
+//   bordvakje* verwijderaar;
+//   bordvakje* hulp_verwijder = ingang ;
+
+//   while (hulp_verwijder -> buren[4]){
+//     hulp_verwijder = hulp_verwijder -> buren[4];
+//     cout << "moved" << endl;
+//   }
+
+//   verwijderaar=hulp_verwijder;
+  
+//   while (hulp_verwijder){
+//     while (hulp_verwijder -> buren[2]){
+//       verwijderaar=hulp_verwijder;
+      
+//       while (verwijderaar -> buren[2]){
+//         verwijderaar = verwijderaar -> buren[2];
+//       }
+//       delete verwijderaar;
+//     }
+//     verwijderaar = hulp_verwijder;
+//     hulp_verwijder = hulp_verwijder -> buren[0];
+//     delete verwijderaar;
+//   }
+// }
+
+void koffiebord::flood_fill(bordvakje* pos){
+  pos -> geopend = true;
+
+  for (int i = 0; i < 8; i++)
+  {
+    if (pos -> buren[i]){
+      if (pos -> buren [i] -> aantal_buren == 0 && pos -> buren[i] -> geopend == false){
+        flood_fill(pos -> buren[i]);
+      }
+      else{
+        pos -> buren[i] -> geopend = true;
+      }
+    }
+  }
 }
 
 
-
-void koffiebord::verwijder_bord(){
-  bordvakje* verwijderaar;
-  bordvakje* hulp_verwijder = ingang ;
-
-  while (hulp_verwijder -> buren[4]){
-    hulp_verwijder = hulp_verwijder -> buren[4];
-    cout << "moved" << endl;
-  }
-
-  verwijderaar=hulp_verwijder;
-  
-  while (hulp_verwijder){
-    while (hulp_verwijder -> buren[2]){
-      verwijderaar=hulp_verwijder;
-      
-      while (verwijderaar -> buren[2]){
-        verwijderaar = verwijderaar -> buren[2];
-      }
-      delete verwijderaar;
-    }
-    verwijderaar = hulp_verwijder;
-    hulp_verwijder = hulp_verwijder -> buren[0];
-    delete verwijderaar;
-  }
-}
-
-
-
-
-void koffiebord::checker(){
-  bordvakje* koffiechecker;
-  bordvakje* hulp=ingang;
-  int controle;
-  int aantal_fout=1, aantal_fout1=1, aantal_fout2=1;
-  int aantal_open=1;
-
-  int aantal_vakjes=breedte*hoogte;
-  while (aantal_open!=0){
-  
-  
-    for (int g = 0; g < hoogte; g++){
-      for (int h = 0 ; h < breedte; h++){
-        koffiechecker = hulp;
-        if(koffiechecker -> geopend ==true &&
-        koffiechecker -> aantal_buren == 0){
-          aantal_open+=1;
-          for (int k = 0; k < 8; k++){
-            if(koffiechecker -> buren[k] -> aantal_buren == 0 &&
-            koffiechecker -> buren[k] -> marked == false &&
-            koffiechecker -> buren[k] -> geopend == false &&
-            koffiechecker -> buren[k]){
-              for (int q = 0; q < 8; q++){
-                koffiechecker -> buren[q] -> geopend = true;
-              }
-            }
-          }
-        }
-        koffiechecker = koffiechecker -> buren[2];    
-      }
-    hulp = hulp -> buren[4];    
-    }
-    if(aantal_open==1){
-      aantal_open=0;
-    }
-    cout << aantal_open << endl;
-  
-  }
-  
-  while (aantal_fout!=0){
-    koffiechecker=hulp;
-    while (aantal_fout1!=10){
-      
-      while (aantal_fout2!=0){// kijkt in de eerste rij
-        if (koffiechecker -> aantal_buren == 0 &&
-        koffiechecker -> geopend == true){
-          for (int h = 0; h < 8; h++){
-            if (koffiechecker -> buren[h] &&
-            koffiechecker -> buren[h] -> marked == false){
-              koffiechecker -> buren[h] -> geopend == true;
-              controle+=1;
-            }
-            
-          }
-                     
-        }
-        else if (koffiechecker = koffiechecker -> buren[2]){
-          koffiechecker = koffiechecker -> buren[2];  
-        }
-        else if (controle!=0){
-          aantal_fout2=1;
-        }
-        else{
-          aantal_fout=0;
-        }
-        controle=0;
-      }
-      
-    }
-    
-  }
-  
-
-
-
-
-
-
-
-
-
-  // for (int g = 0; g < breedte; g++){
-  //   for (int h = 0; h < hoogte; h++){
-  //     if (koffiechecker -> geopend && koffiechecker -> aantal_buren==0){
-  //       for (int k = 0; k < 8; k++){
-  //         if(koffiechecker -> buren[k] -> marked == false){
-  //           koffiechecker -> buren[k] -> geopend = true;
-  //         }
-  //       }
-  //     }
-  //     koffiechecker=koffiechecker->buren[2];
-  //   }
-  //   koffiechecker=koffiechecker->buren[4];
-  // }
-  
-}
 
 // Voor opvragen hoogte en breedte
 void koffiebord::afmetingen(){
@@ -265,13 +197,13 @@ void koffiebord::afmetingen(){
 void koffiebord::koffies(){
   srand(time(0));
   int xkoffie,ykoffie;
-  int aantalkoffies, controle=0;
+  int controle=0;
   bordvakje* schenker;
+  aantal_koffies=(percentage*hoogte*breedte)/100;
 
-
-  aantalkoffies=(percentage*hoogte*breedte)/100;
   
-  while (aantalkoffies!=controle){
+  
+  while (aantal_koffies!=controle){
     xkoffie=rand() % (breedte);
     ykoffie=rand() % (hoogte);
     schenker = readcoord(xkoffie,ykoffie);
@@ -337,10 +269,16 @@ void koffiebord::ritsen(){
   }
 }
 
+void koffiebord::legenda(){
+  cout << "Aantal zetten tot nu toe: "<< zetten << " Aantal koffies: "
+  << aantal_koffies << endl;
 
+
+
+}
 
 void koffiebord::zet(){
-  bordvakje* keuze;
+  // bordvakje* keuze;
   int xcord;
   int ycord;
 
@@ -348,28 +286,253 @@ void koffiebord::zet(){
   xcord=read_num(2);
   cout << "Geef de y coordinaat van het vakje dat je wil openen: ";
   ycord=read_num(2);
+  
+  doe_zet(xcord,ycord);
+  
+}
+
+void koffiebord::markzet(){
+  bordvakje* keuze;
+  int xcord;
+  int ycord;
+
+  cout << "Geef de x coordinaat van het vakje dat je wil markeren: ";
+  xcord=read_num(2);
+  cout << "Geef de y coordinaat van het vakje dat je wil markeren: ";
+  ycord=read_num(2);
 
   keuze = readcoord(xcord,ycord);  
 
-  keuze -> geopend = true;
-  
-  
-
-
-
-
-
-  
+  if (keuze -> geopend == false && keuze -> flag == false){
+    keuze -> flag = true;  
+  }
+  else if (keuze -> flag == true){
+    keuze -> flag = false;
+  }
+  else{
+    cout << "Dit vakje is al open" << endl;
+  }
 }
 
+void koffiebord::aantal_gesloten(){
+  bordvakje* start = ingang;
+  bordvakje* hulp = start;
+  gesloten_vakjes = 0;
 
+  while (start -> buren[4]){
+    hulp = start;
+    while (hulp -> buren[2]){
+      if (hulp -> geopend == false && hulp -> flag == false){
+        gesloten_vakjes++;
+      }
+      hulp = hulp -> buren[2];
+    }
+    start = start -> buren[4];
+  }
+}
 
+void koffiebord::koffie_eerste_zet(){
+  aantal_gesloten();
+  bordvakje* col_fol = ingang; // volgt linker kolom
+  bordvakje* placer_pos = col_fol;
+  int vrije_plekken = aantal_vakjes - aantal_koffies;  
+  int rand_koffie = 0, controle = 0;
+  rand_koffie = rand() % vrije_plekken;
+  cout << rand_koffie << endl;
+
+  while (true){
+    cout << "Hier 1 " << endl;
+    while (col_fol){
+      cout << "Hier 2 " << endl;
+      placer_pos = col_fol;
+      while (placer_pos){
+        cout << "Hier 3 " << endl;
+        if (placer_pos -> marked == false){
+          controle++;
+        }
+        if (controle == rand_koffie){
+          cout << "Hier 4" << endl; 
+          break;
+        }
+        else{
+          placer_pos = placer_pos -> buren[2];     
+        }
+        cout << controle << endl;
+      }
+      if (controle == rand_koffie){
+        cout << "Hier 5" << endl;
+        break;
+      }
+      col_fol = col_fol -> buren[4];
+    }
+    if (controle == rand_koffie)
+      break;
+  }
+  cout << "Hier 6" << endl;
+  placer_pos -> marked = true;
+  
+  for (int i = 0; i < 8; i++){
+    if (placer_pos -> buren[i]){  
+      placer_pos -> buren[i] -> aantal_buren++;
+    }
+  }
+  cout << "Hier 7" << endl;
+
+}
+
+void koffiebord::af(){
+  bordvakje* col_fol = ingang;
+  bordvakje* opener;
+  int aantal_geopend=0;
+  cout << "Sorry je bent af, je hebt een koffie geraakt" << endl;
+
+  opener = col_fol;
+  while (col_fol != nullptr){
+    while (opener != nullptr){
+      opener -> geopend = true;
+      aantal_geopend++;
+      opener = opener -> buren[2];
+    }   
+    col_fol = col_fol -> buren[4];
+    opener = col_fol;
+  }
+
+  cout << aantal_geopend << endl;
+}
 
 
 void koffiebord::czet(){
+  aantal_gesloten();
+  bordvakje* pos_zet;
+  bordvakje* col_fol = ingang;
+  int pos_rand = 0;
+  int controle = 0;
+  int x_pos = 0, y_pos = 0;
+  pos_rand = rand() % gesloten_vakjes;
+  cout << pos_rand << endl;
+
+  while (true){
+    while (col_fol/* -> buren[4]*/){
+      pos_zet = col_fol;
+      x_pos=0;
+      while (pos_zet -> buren[2]){
+        if (pos_zet -> geopend == false && pos_zet -> flag == false){
+          controle++;
+          if (controle == pos_rand){
+            break;
+          }
+        }
+        pos_zet = pos_zet -> buren[2];
+        x_pos++;
+      }
+      if (controle == pos_rand){
+        break;
+      }      
+      col_fol = col_fol -> buren[4];
+      y_pos++;
+    }
+    if (controle == pos_rand){
+      break;
+    }
+  }
+
+  doe_zet(x_pos,y_pos);
+  // if (zetten==0 && pos_zet -> marked == true){
+  //   koffie_eerste_zet();
+  //   pos_zet -> marked = false;
+  //   for (int i = 0; i < 8; i++){
+  //     pos_zet -> buren[i] -> aantal_buren--;
+  //   }
+  //   pos_zet -> geopend = true;
+  // }
+  // else if (pos_zet -> marked == true){
+  //   af();
+  // }
+  // else if (pos_zet -> aantal_buren ==0){
+  //   flood_fill(pos_zet);
+  // }
+  // else{
+  //   pos_zet -> geopend = true;
+  // }
+  // zetten++;
+}
 
 
+
+
+// void koffiebord::doe_zet(int i, int j){
+//   bordvakje* keuze;
+  
+//   keuze = readcoord(i,j);  
+  
+//   if (zetten==0 && keuze -> marked == true){
+//     koffie_eerste_zet();
+//     keuze -> marked = false;
+//     for (int i = 0; i < 8; i++){
+//       keuze -> buren[i] -> aantal_buren--;
+//     }
+//     keuze -> geopend = true;
+//   }
+
+//   // if (keuze -> flag == true || keuze -> geopend == true && rand == true){
+    
+//   // }
+  
+//   if (keuze -> flag == true){
+//     cout << "Deze positie is gemarkeerd" << endl;
+//   }
+//   else if(keuze -> marked == true){
+//     af();
+//   }
+//   else if (keuze -> aantal_buren == 0){
+//     flood_fill(keuze);
+//   }
+//   else{
+//     keuze -> geopend = true;
+//   }
+//   zetten++;
+// }
+// Als eerste zet een koffie is moet het de koffie_eerste_zet functie runnen 
+// Als een zet al open is of flag moet er worden
+//
+
+
+void koffiebord::doe_zet(int i, int j){
+  bordvakje* keuze;
+  keuze = readcoord(i,j);
+
+  if (zetten == 0 && keuze -> marked == true){
+    koffie_eerste_zet();
+    
+    keuze -> marked = false;
+    for (int i = 0; i < 8; i++){
+      if (keuze -> buren[i])     
+        keuze -> buren[i] -> aantal_buren--;
+    }
+    keuze -> geopend = true;
+  }
+  else if (keuze -> flag == true){
+    cout << "Deze plek is gemarkeerd" << endl;
+    zetten--; 
+  }
+  else if (keuze -> aantal_buren ==0){
+    flood_fill(keuze);
+  }
+  else if (keuze -> marked == true){
+    af();
+  }
+  else{
+    keuze -> geopend = true;
+  }
+  zetten++;
 
 }
 
+/*
+10
+10
+10
+c
+
+*/
 // TODO

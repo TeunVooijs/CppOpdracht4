@@ -5,6 +5,7 @@ class bordvakje {
 public:
   bool marked;
   bool geopend;
+  bool flag;
 
   bordvakje* prev; 
   int aantal_buren;     //     7 0 1
@@ -19,19 +20,28 @@ private: // voor moeilijke zooi
   bordvakje* ingang;
   bordvakje* vorige;
   bordvakje* readcoord(int i, int j);
+  bordvakje* coordchecker();
+  void koffie_eerste_zet();
+  void doe_zet(int i, int j);
   void maakrij(); //om rij aan te maken
   bool klaar();
   void afmetingen();
   void ritsen();
+  void flood_fill(bordvakje* pos);
   void koffies();
-  int hoogte, breedte, percentage;
+  void aantal_gesloten();
+  void af();
+  int aantal_koffies;
+  int hoogte, breedte, percentage, aantal_vakjes;
   int countk; int steps;
-  
+  int zetten;
+  int gesloten_vakjes;
   
   // TODO
 public: //Hieronder voor spelen
-  void checker();
+  void legenda();
   void open();
+  void markzet();
   void bouwbord();
   void speelbord();
   void verwijder_bord();

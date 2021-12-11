@@ -58,9 +58,7 @@ int read_num(int aantal){
 
 bool menu(koffiebord & player_koffiebord){
     int arr[2];
-    cout << "Type de letter die tussen de haakjes staat om het uit te voeren" << endl <<
-    "(S)toppen, (H)eelschoon, s(C)hoon, (M)ove view, (P)arameters, "
-    "(R)andom, (T)oggle, g(L)idergun, (E)en generatie, (G)a meerdere, (W/A/Z/D) bewegen cursor: ";
+    cout << "Letter: ";
     
     read_char(arr);
     // player_koffiebord.bouwbord();
@@ -78,18 +76,18 @@ bool menu(koffiebord & player_koffiebord){
         break;
     case 'c': case 'C':
         player_koffiebord.zet();
-        player_koffiebord.checker();
+        // player_koffiebord.checker();
         // player_koffiebord.checker();
         break;
-    case 'v': case 'V':
-        player_koffiebord.verwijder_bord();
+    // case 'v': case 'V':
+        // player_koffiebord.verwijder_bord();
+        // break;
+    case 'f': case 'F':
+        player_koffiebord.markzet();
         break;
-    // case 'o': case 'O':
-    //     player_koffiebord.open();
-    //     break;
-    // case 'e': case 'E':
-    //     player_koffiebord.een();
-    //     break;
+    case 'r': case 'R':
+        player_koffiebord.czet();
+        break;
     // case 'g': case 'G':
     //     player_koffiebord.go();
     //     break;
@@ -116,6 +114,7 @@ int main(){
     while (true){
         // main_koffiebord.legenda();
         main_koffiebord.drukaf();
+        main_koffiebord.legenda();
         if (menu(main_koffiebord)){return 0;} 
         // main_koffiebord.checker();
     }
