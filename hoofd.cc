@@ -88,14 +88,14 @@ bool menu(koffiebord & player_koffiebord){
     case 'r': case 'R':
         player_koffiebord.czet();
         break;
-    // case 'g': case 'G':
-    //     player_koffiebord.go();
-    //     break;
+    case 'g': case 'G':
+        player_koffiebord.~koffiebord();
+        break;
+    case 'n': case 'N':
+        playbe rnew koffiebord();
+        break;
     // case 'w':case 'a':case 'z':case 'd':
     //     player_koffiebord.cursor(arr[0],arr[1]);
-    //     break;
-    // case 'l': case 'L':
-    //     player_koffiebord.glidergun();
     //     break;
     default:
         break;

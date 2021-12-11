@@ -31,11 +31,13 @@ private: // voor moeilijke zooi
   void koffies();
   void aantal_gesloten();
   void af();
+  void eind_zet();
   int aantal_koffies;
   int hoogte, breedte, percentage, aantal_vakjes;
   int countk; int steps;
   int zetten;
-  int gesloten_vakjes;
+  int gesloten_vakjes, controle_geopende_vakjes;
+  int geopende_vakjes;
   
   // TODO
 public: //Hieronder voor spelen
