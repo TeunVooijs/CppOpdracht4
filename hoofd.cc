@@ -56,7 +56,7 @@ int read_num(int aantal){
 }
 
 
-void menu(koffiebord* & player_koffiebord){
+bool menu(koffiebord* & player_koffiebord){
     // 123
     int arr[2];
     cout << "Letter: ";
