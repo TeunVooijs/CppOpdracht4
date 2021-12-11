@@ -11,3 +11,9 @@ kijk of er een 0 is die dichte buren heeft
 open dan alle buren en geen waarde ++
 blijf loopen door de hele map met dubbele while loop
 als waarde gelijk is aan 0 zal alles gedaan zijn
+
+
+
+
+voor random zet
+zorg dat tie begint met tellen als eerste dichte vakje gevonden is

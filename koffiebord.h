@@ -19,25 +19,25 @@ class koffiebord {
 private: // voor moeilijke zooi
   bordvakje* ingang;
   bordvakje* vorige;
-  bordvakje* readcoord(int i, int j);
-  bordvakje* coordchecker();
+  bordvakje* readcoord(int i, int j); 
+  // Loopt naar een coordinaat en geeft adres terug
   void koffie_eerste_zet();
-  void doe_zet(int i, int j);
+  void doe_zet(int i, int j); 
+  // Regelt alles wanneer de computer of persoon een zet doet
   void maakrij(); //om rij aan te maken
-  bool klaar();
-  void afmetingen();
-  void ritsen();
-  void flood_fill(bordvakje* pos);
-  void koffies();
-  void aantal_gesloten();
-  void af();
-  void eind_zet();
-  int aantal_koffies;
+  bool klaar(); 
+  void afmetingen(); // Vraagt de afmetingen op
+  void ritsen(); // Ritst rijen van het bord aan elkaar
+  void flood_fill(bordvakje* pos); // Opent aanliggende nul-vakjes
+  void koffies(); // Plaatst en berekent de koffies
+  void closed(); // Berekent het aantal gesloten vakjes
+  void af(); // Wanneer een koffie is gevonden
+  void eind_zet(); // Na een zet wordt gecontroleerd of de speler gewonnen heeft
+  int aantal_koffies; // Koffies in het bord
   int hoogte, breedte, percentage, aantal_vakjes;
-  int countk; int steps;
-  int zetten;
-  int gesloten_vakjes, controle_geopende_vakjes;
-  int geopende_vakjes;
+  int zetten; // Het aantal zetten van dit spel
+  int gesloten_vakjes; // Alle nog gesloten vakjes, naast de flags
+  int geopende_vakjes, controle_geopende_vakjes;
   
   // TODO
 public: //Hieronder voor spelen

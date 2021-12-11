@@ -56,50 +56,52 @@ int read_num(int aantal){
 }
 
 
-bool menu(koffiebord & player_koffiebord){
+void menu(koffiebord* & player_koffiebord){
+    // 123
     int arr[2];
     cout << "Letter: ";
     
     read_char(arr);
-    // player_koffiebord.bouwbord();
-    
-    switch (arr[0]){
-    case 's': case 'S':
-        return true;    
-        break;
-    case 'h': case 'H':
-        // player_koffiebord.speelbord();
-        // player_koffiebord.drukaf();
-        break;
-    case 'm': case 'M':
-        // player_koffiebord.readcoord();
-        break;
-    case 'c': case 'C':
-        player_koffiebord.zet();
-        // player_koffiebord.checker();
-        // player_koffiebord.checker();
-        break;
-    // case 'v': case 'V':
-        // player_koffiebord.verwijder_bord();
-        // break;
-    case 'f': case 'F':
-        player_koffiebord.markzet();
-        break;
-    case 'r': case 'R':
-        player_koffiebord.czet();
-        break;
-    case 'g': case 'G':
-        player_koffiebord.~koffiebord();
-        break;
-    case 'n': case 'N':
-        playbe rnew koffiebord();
-        break;
-    // case 'w':case 'a':case 'z':case 'd':
-    //     player_koffiebord.cursor(arr[0],arr[1]);
-    //     break;
-    default:
-        break;
-    } 
+    // main_koffiebord.bouwbord();
+
+        switch (arr[0]){
+        case 's': case 'S':
+            return true;    
+            break;
+        case 'h': case 'H':
+            // main_koffiebord.speelbord();
+            // main_koffiebord.drukaf();
+            break;
+        case 'm': case 'M':
+            // main_koffiebord.readcoord();
+            break;
+        case 'c': case 'C':
+            player_koffiebord -> zet();
+            // main_koffiebord.checker();
+            // main_koffiebord.checker();
+            break;
+        // case 'v': case 'V':
+            // main_koffiebord.verwijder_bord();
+            // break;
+        case 'f': case 'F':
+            player_koffiebord -> markzet();
+            break;
+        case 'r': case 'R':
+            player_koffiebord -> czet();
+            break;
+        case 'g': case 'G':
+            player_koffiebord -> ~koffiebord();
+            player_koffiebord = new koffiebord();
+            break;
+        // case 'n': case 'N':
+        //     break;
+        // case 'w':case 'a':case 'z':case 'd':
+        //     main_koffiebord.cursor(arr[0],arr[1]);
+        //     break;
+        default:
+        cout << "De lul" << endl;
+            break;
+        }
     return false;
 
 }
@@ -109,14 +111,15 @@ bool menu(koffiebord & player_koffiebord){
 // de matrix en legenda geprint en zal wanneer er niet wordt gestopt het 
 // menu opkomen
 int main(){
-    koffiebord main_koffiebord;
+    koffiebord* main_koffiebord = new koffiebord; 
+    // 123
     
     while (true){
-        // main_koffiebord.legenda();
-        main_koffiebord.drukaf();
-        main_koffiebord.legenda();
+        main_koffiebord -> drukaf();
+        main_koffiebord -> legenda();
+
         if (menu(main_koffiebord)){return 0;} 
-        // main_koffiebord.checker();
+
     }
     return 0;
 }
