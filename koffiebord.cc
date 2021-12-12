@@ -1,7 +1,9 @@
 #include <ctime>
-#include "stdlib.h"
 #include <iostream>
+#include <fstream>
+#include "stdlib.h"
 #include "koffiebord.h"
+#include "stapel.h"
 using namespace std;
 
 
@@ -21,14 +23,17 @@ bordvakje::bordvakje ( ) {
 }//bordvakje::bordvakje
 
 koffiebord::koffiebord ( ) {
+  spel_eind = false;
   srand(time(NULL));
   ingang = nullptr;
   vorige = nullptr;
 
-  afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
+  if (comp == false){
+    afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
+  }  
   bouwbord(); // Maakt het bord
   koffies(); // Plaatst de koffies
-  cout << "Test 1" << endl;
+  // cout << "Test 1" << endl;
   zetten=0;
   gesloten_vakjes=0;
   geopende_vakjes=0;
@@ -48,7 +53,7 @@ koffiebord::~koffiebord(){
   }
 
   while (ingang){
-    cout << "Ingang in destructor: " << ingang << endl;
+    // cout << "Ingang in destructor: " << ingang << endl;
     hulp_deleter = ingang;
     ingang = ingang -> buren[0];
     while (hulp_deleter){
@@ -59,14 +64,14 @@ koffiebord::~koffiebord(){
       
     }
   }
-  cout << "Ingang bij ~koffiebord: " << ingang << endl;
+  // cout << "Ingang bij ~koffiebord: " << ingang << endl;
 }//koffiebord::~koffiebord 
 
 void koffiebord::drukaf ( ) {
   bordvakje* hulp;
   bordvakje* start;
 
-  cout << "Ingang bij drukaf: " << ingang << endl;
+  // cout << "Ingang bij drukaf: " << ingang << endl;
 
   start = ingang;
   hulp = start;
@@ -167,34 +172,6 @@ bordvakje* koffiebord::readcoord(int i, int j){ // i = x-as j = y-as
 
 
 
-
-
-// void koffiebord::verwijder_bord(){
-//   bordvakje* verwijderaar;
-//   bordvakje* hulp_verwijder = ingang ;
-
-//   while (hulp_verwijder -> buren[4]){
-//     hulp_verwijder = hulp_verwijder -> buren[4];
-//     cout << "moved" << endl;
-//   }
-
-//   verwijderaar=hulp_verwijder;
-  
-//   while (hulp_verwijder){
-//     while (hulp_verwijder -> buren[2]){
-//       verwijderaar=hulp_verwijder;
-      
-//       while (verwijderaar -> buren[2]){
-//         verwijderaar = verwijderaar -> buren[2];
-//       }
-//       delete verwijderaar;
-//     }
-//     verwijderaar = hulp_verwijder;
-//     hulp_verwijder = hulp_verwijder -> buren[0];
-//     delete verwijderaar;
-//   }
-// }
-
 void koffiebord::flood_fill(bordvakje* pos){
   pos -> geopend = true;
 
@@ -212,8 +189,6 @@ void koffiebord::flood_fill(bordvakje* pos){
   }
 }
 
-
-
 // Voor opvragen hoogte en breedte
 void koffiebord::afmetingen(){
   cout << "Hoogte: ";
@@ -222,8 +197,8 @@ void koffiebord::afmetingen(){
   breedte = read_num(4);
   cout << "Percentage gevuld: ";
   percentage = read_num(3);
-
 }
+
 
 
 void koffiebord::koffies(){
@@ -232,9 +207,9 @@ void koffiebord::koffies(){
   int controle=0;
   bordvakje* schenker;
   aantal_koffies=(percentage*hoogte*breedte)/100;
+  if (aantal_koffies == 0)
+    aantal_koffies = 1;
 
-  
-  
   while (aantal_koffies!=controle){
     xkoffie=rand() % (breedte);
     ykoffie=rand() % (hoogte);
@@ -242,7 +217,6 @@ void koffiebord::koffies(){
     
     if (schenker -> marked == false){
       schenker -> marked = true;
-      
       for (int h = 0; h < 8; h++){
         if (schenker -> buren[h]){
           schenker -> buren[h] -> aantal_buren++;
@@ -252,8 +226,6 @@ void koffiebord::koffies(){
     } 
 
   }
-   cout << "ingang koffies: " << ingang << endl;
-
 }
 
 
@@ -285,14 +257,14 @@ void koffiebord::bouwbord(){
     ritsen();
     
   }
-  cout << "Ingang bij bouwen: " << ingang << endl;
+  // cout << "Ingang bij bouwen: " << ingang << endl;
 }
 
 void koffiebord::ritsen(){
   bordvakje* hulp;
-  cout << ingang << endl;
+  // cout << ingang << endl;
   hulp = ingang;
-  cout << hulp << endl;
+  // cout << hulp << endl;
   while (vorige){
     vorige -> buren[0] = hulp;
     vorige -> buren[1] = hulp -> buren [2];
@@ -360,12 +332,11 @@ void koffiebord::closed(){
     while (hulp){
       if (hulp -> geopend == false && hulp -> flag == false){
         gesloten_vakjes++; // Wanneer een vakje dicht is en geen flag
-      } //
+      } // word het aantal gesloten vakjes 1 meer
       hulp = hulp -> buren[2];
     }
     start = start -> buren[4];
   }
-  cout << gesloten_vakjes << " Aantal gesloten" << endl;
 }
 
 void koffiebord::koffie_eerste_zet(){
@@ -375,8 +346,6 @@ void koffiebord::koffie_eerste_zet(){
   int rand_koffie = 0, controle = 0;
   rand_koffie = rand() % vrije_plekken;
   
-  // cout << rand_koffie << endl;
-
   while (true){
     while (col_fol){
       placer_pos = col_fol;
@@ -390,11 +359,9 @@ void koffiebord::koffie_eerste_zet(){
         else{
           placer_pos = placer_pos -> buren[2];     
         }
-        cout << controle << endl;
       }
-      if (controle == rand_koffie){
+      if (controle == rand_koffie)
         break;
-      }
       col_fol = col_fol -> buren[4];
     }
     if (controle == rand_koffie)
@@ -403,17 +370,61 @@ void koffiebord::koffie_eerste_zet(){
   placer_pos -> marked = true;
   
   for (int i = 0; i < 8; i++){
-    if (placer_pos -> buren[i]){  
+    if (placer_pos -> buren[i])
       placer_pos -> buren[i] -> aantal_buren++;
-    }
   }
+}
+
+
+void koffiebord::choofd(koffiebord*&runner){
+  cout << "Hoe vaak wil je dat de computer speelt?:";
+  aantal_runs = read_num(2);
+  int max_zet[20]{0};
+
+
+  for (int i = 0; i < aantal_runs; i++){
+    comp = true;
+    crunner();
+
+    max_zet[zetten_tot_af]++;
+    cout << "Hier 1" << endl << ingang << endl;    
+    runner -> ~koffiebord();
+    cout << ingang << endl;
+    runner = new koffiebord();
+    cout << ingang << endl;
+  }
+  
+  cout << "Hier 2" << endl;
+  for (int j = 0; j < 20; j++){
+    ofstream output ("U:\\Semester1\\ProgrammeerMethoden\\Opdracht4\\output.txt", ios::out);
+    
+    output.put(max_zet[j]);
+    
+    output.close();
+    
+  }
+  
+}
+
+void koffiebord::crunner(){
+  comp_dood = false;
+  zetten_tot_af = 0;
+
+  while (comp_dood == false){
+    czet();
+    zetten_tot_af++;
+    if (zetten_tot_af >=19){
+      comp_dood = true;
+    }
+    cout << zetten_tot_af << endl;
+  }
+  
 
 }
 
 void koffiebord::af(){
   bordvakje* col_fol = ingang;
   bordvakje* opener;
-  // int aantal_geopend=0;
   cout << "Sorry je bent af, je hebt een koffie geraakt" << endl;
 
   opener = col_fol;
@@ -425,10 +436,7 @@ void koffiebord::af(){
     col_fol = col_fol -> buren[4];
     opener = col_fol;
   }
-
-
-
-
+  spel_eind = true;
 }
 
 
@@ -439,10 +447,8 @@ void koffiebord::czet(){
   int pos_rand = 0;
   int controle = -1;
   int x_pos = 0, y_pos = 0;
-  pos_rand = rand() % gesloten_vakjes;
-  cout << pos_rand << endl;
+  pos_rand = rand() % (gesloten_vakjes-1);
   
-
   while (true){
     while (col_fol){
       pos_zet = col_fol;
@@ -463,30 +469,53 @@ void koffiebord::czet(){
       col_fol = col_fol -> buren[4];
       y_pos++;
     }
-    if (controle == pos_rand){
+    if (controle == pos_rand)
       break;
-    }
   }
-  doe_zet(x_pos,y_pos);
-
+  if (comp == true)
+    compzet(x_pos,y_pos);
+  else
+    doe_zet(x_pos,y_pos);
 }
 
+void koffiebord::compzet(int i, int j){
+  bordvakje* keuze;
+  keuze = readcoord(i,j);
 
+  if (keuze -> marked == true && zetten_tot_af != 0 ){
+    comp_dood = true;
+  }
+  if (zetten_tot_af == 0 && keuze -> marked == true){
+    koffie_eerste_zet();
+    
+    keuze -> marked = false;
+    for (int i = 0; i < 8; i++){
+      if (keuze -> buren[i])     
+        keuze -> buren[i] -> aantal_buren--;
+    }
+    keuze -> geopend = true;
+  }
+  else if (keuze -> aantal_buren == 0){
+    flood_fill(keuze);
+  }
+  else{
+    keuze -> geopend = true;
+  }
+}
 
 
 // Als eerste zet een koffie is moet het de koffie_eerste_zet functie runnen 
 // Als een zet al open is of flag moet er worden
 //
-
-
 void koffiebord::doe_zet(int i, int j){
   bordvakje* keuze;
   keuze = readcoord(i,j);
 
-  if (keuze -> marked == true && zetten != 0){
+
+  if (keuze -> marked == true && zetten != 0 ){
+    zetten++;
     af();
   }
-
   if (zetten == 0 && keuze -> marked == true){
     koffie_eerste_zet();
     
@@ -501,14 +530,14 @@ void koffiebord::doe_zet(int i, int j){
     cout << "Deze plek is gemarkeerd" << endl;
     zetten--; 
   }
-  else if (keuze -> aantal_buren == 0){
+  
+  if (keuze -> aantal_buren == 0 && keuze -> marked == false){
     flood_fill(keuze);
   }
   else{
     keuze -> geopend = true;
   }
   zetten++;
-
 }
 
 void koffiebord::eind_zet(){
@@ -527,7 +556,8 @@ void koffiebord::eind_zet(){
     col_fol = col_fol -> buren[4];
   }
   if (controle == aantal_koffies){
-    
+    cout << "Je hebt gewonnen :) ";
+    spel_eind = true;
   }
   
   

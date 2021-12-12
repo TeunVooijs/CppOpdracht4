@@ -11,7 +11,6 @@ public:
   int aantal_buren;     //     7 0 1
   bordvakje* buren[8];  //     6   2
   bordvakje ( );        //     5 4 3
-  int x,y;
 
 };//bordvakje
  
@@ -32,21 +31,25 @@ private: // voor moeilijke zooi
   void koffies(); // Plaatst en berekent de koffies
   void closed(); // Berekent het aantal gesloten vakjes
   void af(); // Wanneer een koffie is gevonden
-  void eind_zet(); // Na een zet wordt gecontroleerd of de speler gewonnen heeft
   int aantal_koffies; // Koffies in het bord
   int hoogte, breedte, percentage, aantal_vakjes;
   int zetten; // Het aantal zetten van dit spel
   int gesloten_vakjes; // Alle nog gesloten vakjes, naast de flags
   int geopende_vakjes, controle_geopende_vakjes;
-  
+  int aantal_runs, zetten_tot_af;
+  void compzet(int i, int j);
+  void bouwbord();
+  void crunner();
+  bool comp_dood;
+  bool comp = false;
+
   // TODO
 public: //Hieronder voor spelen
+  void eind_zet(); // Na een zet wordt gecontroleerd of de speler gewonnen heeft
   void legenda();
-  void open();
+  bool spel_eind;
   void markzet();
-  void bouwbord();
-  void speelbord();
-  void verwijder_bord();
+  void choofd(koffiebord* & runner);
   koffiebord ( );
   ~koffiebord ( );
   void drukaf ( );
