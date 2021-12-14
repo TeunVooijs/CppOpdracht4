@@ -6,8 +6,6 @@
 #include "stapel.h"
 using namespace std;
 
-
-
 bordvakje::bordvakje ( ) {
   geopend = false;
   flag = false;
@@ -17,9 +15,6 @@ bordvakje::bordvakje ( ) {
   for (int i = 0; i < 8; i++){
     buren[i]=nullptr;
   }
-  
-
-
 }//bordvakje::bordvakje
 
 koffiebord::koffiebord ( ) {
@@ -31,18 +26,15 @@ koffiebord::koffiebord ( ) {
   afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
   bouwbord(); // Maakt het bord
   koffies(); // Plaatst de koffies
-  // cout << "Test 1" << endl;
   zetten=0;
   gesloten_vakjes=0;
   geopende_vakjes=0;
   controle_geopende_vakjes=(breedte*hoogte)-aantal_koffies;
   aantal_vakjes= breedte * hoogte;
-  
 
 }//koffiebord::koffiebord
 
 koffiebord::~koffiebord(){
-  // bordvakje* col_fol = ingang;
   bordvakje* deleter;
   bordvakje* hulp_deleter;
   
@@ -51,7 +43,6 @@ koffiebord::~koffiebord(){
   }
 
   while (ingang){
-    // cout << "Ingang in destructor: " << ingang << endl;
     hulp_deleter = ingang;
     ingang = ingang -> buren[0];
     while (hulp_deleter){
@@ -62,14 +53,11 @@ koffiebord::~koffiebord(){
       
     }
   }
-  // cout << "Ingang bij ~koffiebord: " << ingang << endl;
 }//koffiebord::~koffiebord 
 
 void koffiebord::drukaf ( ) {
   bordvakje* hulp;
   bordvakje* start;
-
-  // cout << "Ingang bij drukaf: " << ingang << endl;
 
   start = ingang;
   hulp = start;
@@ -222,7 +210,6 @@ void koffiebord::koffies(){
       }
       controle++;
     } 
-
   }
 }
 
@@ -233,19 +220,17 @@ void koffiebord::maakrij(){
   bordvakje* hulp;
   vorige = ingang;
   hulp = nullptr;
-  
+
   for (int i = 0; i < breedte; i++){
     p = new bordvakje;
-
     p -> buren[2] = hulp;
 
     if (p -> buren[2])
       p -> buren[2] -> buren[6] = p;
-    
     hulp = p;
   }
-  
   ingang = hulp;
+
 }
 
 void koffiebord::bouwbord(){
@@ -253,14 +238,11 @@ void koffiebord::bouwbord(){
     maakrij();
     ritsen();
   }
-  // cout << "Ingang bij bouwen: " << ingang << endl;
 }
 
 void koffiebord::ritsen(){
   bordvakje* hulp;
-  // cout << ingang << endl;
   hulp = ingang;
-  // cout << hulp << endl;
   while (vorige){
     vorige -> buren[0] = hulp;
     vorige -> buren[1] = hulp -> buren [2];
@@ -276,13 +258,9 @@ void koffiebord::ritsen(){
 void koffiebord::legenda(){
   cout << "Aantal zetten tot nu toe: "<< zetten << " Aantal koffies: "
   << aantal_koffies << endl;
-
-
-
 }
 
 void koffiebord::zet(){
-  // bordvakje* keuze;
   int xcord;
   int ycord;
 
