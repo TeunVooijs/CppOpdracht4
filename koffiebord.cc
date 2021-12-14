@@ -28,9 +28,7 @@ koffiebord::koffiebord ( ) {
   ingang = nullptr;
   vorige = nullptr;
 
-  if (comp == false){
-    afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
-  }  
+  afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
   bouwbord(); // Maakt het bord
   koffies(); // Plaatst de koffies
   // cout << "Test 1" << endl;
@@ -236,7 +234,6 @@ void koffiebord::maakrij(){
   vorige = ingang;
   hulp = nullptr;
   
-
   for (int i = 0; i < breedte; i++){
     p = new bordvakje;
 
@@ -247,7 +244,7 @@ void koffiebord::maakrij(){
     
     hulp = p;
   }
-
+  
   ingang = hulp;
 }
 
@@ -255,7 +252,6 @@ void koffiebord::bouwbord(){
   for (int i = 0; i < hoogte; i++){
     maakrij();
     ritsen();
-    
   }
   // cout << "Ingang bij bouwen: " << ingang << endl;
 }
@@ -376,25 +372,11 @@ void koffiebord::koffie_eerste_zet(){
 }
 
 
-void koffiebord::choofd(koffiebord*&runner){
-  cout << "Hoe vaak wil je dat de computer speelt?:";
-  aantal_runs = read_num(2);
-  int max_zet[20]{0};
+void koffiebord::choofd(){
+  crunner();
+}
 
-
-  for (int i = 0; i < aantal_runs; i++){
-    comp = true;
-    crunner();
-
-    max_zet[zetten_tot_af]++;
-    cout << "Hier 1" << endl << ingang << endl;    
-    runner -> ~koffiebord();
-    cout << ingang << endl;
-    runner = new koffiebord();
-    cout << ingang << endl;
-  }
-  
-  cout << "Hier 2" << endl;
+void koffiebord::cdruk(){
   for (int j = 0; j < 20; j++){
     ofstream output ("U:\\Semester1\\ProgrammeerMethoden\\Opdracht4\\output.txt", ios::out);
     
@@ -403,10 +385,10 @@ void koffiebord::choofd(koffiebord*&runner){
     output.close();
     
   }
-  
 }
 
 void koffiebord::crunner(){
+  comp = true;
   comp_dood = false;
   zetten_tot_af = 0;
 
@@ -556,7 +538,7 @@ void koffiebord::eind_zet(){
     col_fol = col_fol -> buren[4];
   }
   if (controle == aantal_koffies){
-    cout << "Je hebt gewonnen :) ";
+    cout << "Je hebt niet verloren :| )";
     spel_eind = true;
   }
   
