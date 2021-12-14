@@ -61,7 +61,7 @@ int read_num(int aantal){
 	return getal;
 }
 
-void menu(koffiebord *&player_koffiebord){
+void menu(koffiebord* & player_koffiebord){
 	int arr[2];
 	stapel* st = new stapel;
 
@@ -79,7 +79,7 @@ void menu(koffiebord *&player_koffiebord){
     case 's': case 'S':
       return;
     case 'z': case 'Z':
-			
+			st -> zetopstapel(player_koffiebord);
       player_koffiebord -> zet();
       break;
     case 'f': case 'F':
@@ -91,9 +91,8 @@ void menu(koffiebord *&player_koffiebord){
     case 'c': case 'C':
       // player_koffiebord -> choofd(player_koffiebord);
       return;
-    case 'x': case 'X':
-	  	// player_koffiebord -> ~koffiebord();
-		  // player_koffiebord = new koffiebord(h,b,p);
+    case 't': case 'T':
+		  // player_koffiebord = st -> haalvanstapel();
 		  break;
 		default:
       cout << "Verkeerde letter" << endl;
@@ -107,9 +106,7 @@ void menu(koffiebord *&player_koffiebord){
 	//   player_koffiebord -> ~koffiebord();
 	//   player_koffiebord = new koffiebord();
 	//   break;
-// in de main wordt life opgeroepen en wordt na elke verandering
-// de matrix en legenda geprint en zal wanneer er niet wordt gestopt het
-// menu opkomen
+
 int main(){
 	int h, b, p;
 	koffiebord *main_koffiebord;
@@ -125,8 +122,9 @@ int main(){
 		b = read_num(4);
 		cout << "Percentage gevuld: ";
 		p = read_num(3);
-
+		cout << " test" << endl;
 		main_koffiebord = new koffiebord(h,b,p);
+		cout << "Test " << endl;
 		menu(main_koffiebord);
 
     cout << "Wil je opnieuw spelen?" << endl <<

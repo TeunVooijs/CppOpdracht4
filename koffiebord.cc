@@ -3,7 +3,7 @@
 #include <fstream>
 #include "stdlib.h"
 #include "koffiebord.h"
-#include "stapel.h"
+// #include "stapel.h"
 using namespace std;
 
 bordvakje::bordvakje ( ) {
@@ -27,6 +27,7 @@ koffiebord::koffiebord (int h, int b, int p) {
   percentage = p;
   // afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
   ingang = bouwbord(); // Maakt het bord
+  cout << "Test 2" << endl;
   koffies(); // Plaatst de koffies
   zetten=0;
   gesloten_vakjes=0;
@@ -55,27 +56,34 @@ koffiebord::~koffiebord(){
 
 bordvakje* koffiebord::copybord(){
   bordvakje* stap_bord = bouwbord();
-  bordvakje* col_fol_main;
+  bordvakje* stap_bord_ingang = stap_bord;
   bordvakje* col_fol_stap;
-  bordvakje* copier_main;
+  bordvakje* col_fol_main;
   bordvakje* copier_stap;
-  
-  col_fol_main = ingang;
+  bordvakje* copier_main;
 
+  col_fol_main = ingang;
+  col_fol_stap = stap_bord_ingang;
+  cout << ingang << endl;
   while (col_fol_main){
     copier_main = col_fol_main;
+    copier_stap = col_fol_stap;
     while (copier_main){
       copier_stap -> aantal_buren = copier_main -> aantal_buren;
       copier_stap -> marked = copier_main -> marked;
       copier_stap -> flag = copier_main -> flag;
       copier_stap -> geopend = copier_main -> geopend;
-
+      cout << copier_stap << endl;
       copier_stap = copier_stap -> buren[2];
       copier_main = copier_main -> buren[2];
     }
-    col_fol_stap = col_fol_stap -> buren[4];
     col_fol_main = col_fol_main -> buren[4];
+    col_fol_stap = col_fol_stap -> buren[4];
+
   }
+
+  return stap_bord_ingang;
+
 }
 
 
@@ -83,7 +91,6 @@ bordvakje* koffiebord::copybord(){
 void koffiebord::drukaf ( ) {
   bordvakje* hulp;
   bordvakje* start;
-
   start = ingang;
   hulp = start;
 
@@ -138,6 +145,7 @@ void koffiebord::drukaf ( ) {
   else{
     cout << "Leeg" << endl;
   }
+  cout << ingang << endl;
 }//koffiebord::drukaf
 
 
@@ -197,15 +205,15 @@ void koffiebord::flood_fill(bordvakje* pos){
   }
 }
 
-// Voor opvragen hoogte en breedte
-void koffiebord::afmetingen(){
-  cout << "Hoogte: ";
-  hoogte = read_num(4);
-  cout << "Breedte: ";
-  breedte = read_num(4);
-  cout << "Percentage gevuld: ";
-  percentage = read_num(3);
-}
+// // Voor opvragen hoogte en breedte
+// void koffiebord::afmetingen(){
+//   cout << "Hoogte: ";
+//   hoogte = read_num(4);
+//   cout << "Breedte: ";
+//   breedte = read_num(4);
+//   cout << "Percentage gevuld: ";
+//   percentage = read_num(3);
+// }
 
 
 
@@ -236,13 +244,11 @@ void koffiebord::koffies(){
 }
 
 
-
 bordvakje* koffiebord::maakrij(){    
   bordvakje* p;
   bordvakje* hulp;
   vorige = nieuwste;
   hulp = nullptr;
-
   for (int i = 0; i < breedte; i++){
     p = new bordvakje;
     p -> buren[2] = hulp;
@@ -253,18 +259,7 @@ bordvakje* koffiebord::maakrij(){
   }
   nieuwste = hulp;
   return nieuwste;
-  // ingang = hulp
-  // while (vorige){
-  //   vorige -> buren[0] = hulp;
-  //   vorige -> buren[1] = hulp -> buren [2];
-  //   vorige -> buren[7] = hulp -> buren [6];
-  //   hulp -> buren[4] = vorige;
-  //   hulp -> buren[3] = vorige -> buren [2];
-  //   hulp -> buren[5] = vorige -> buren [6];
-  //   hulp = hulp -> buren[2];
-  //   vorige = vorige -> buren[2];
-  // }
-  // ingang = hulp;
+
 
 }
 
@@ -509,11 +504,11 @@ void koffiebord::doe_zet(int i, int j){
   keuze = readcoord(i,j);
 
 
-  if (keuze -> marked == true && zetten != 0 ){
+  if (keuze -> marked == true && zetten != 0 && keuze -> flag == false){
     zetten++;
     af();
   }
-  if (zetten == 0 && keuze -> marked == true){
+  else if (zetten == 0 && keuze -> marked == true){
     koffie_eerste_zet();
     
     keuze -> marked = false;
@@ -523,7 +518,8 @@ void koffiebord::doe_zet(int i, int j){
     }
     keuze -> geopend = true;
   }
-  else if (keuze -> flag == true){
+  
+  if (keuze -> flag == true){
     cout << "Deze plek is gemarkeerd" << endl;
     zetten--; 
   }
