@@ -1,6 +1,7 @@
 // file hoofd.cc
 #include <iostream>
 #include "koffiebord.h"
+#include "stapel.h"
 using namespace std;
 
 void read_char(int arr[])
@@ -62,6 +63,7 @@ int read_num(int aantal){
 
 void menu(koffiebord *&player_koffiebord){
 	int arr[2];
+	stapel* st = new stapel;
 
   while (true){
 		
@@ -77,6 +79,7 @@ void menu(koffiebord *&player_koffiebord){
     case 's': case 'S':
       return;
     case 'z': case 'Z':
+			
       player_koffiebord -> zet();
       break;
     case 'f': case 'F':
@@ -89,8 +92,8 @@ void menu(koffiebord *&player_koffiebord){
       // player_koffiebord -> choofd(player_koffiebord);
       return;
     case 'x': case 'X':
-	  	player_koffiebord -> ~koffiebord();
-		  player_koffiebord = new koffiebord();
+	  	// player_koffiebord -> ~koffiebord();
+		  // player_koffiebord = new koffiebord(h,b,p);
 		  break;
 		default:
       cout << "Verkeerde letter" << endl;
@@ -108,12 +111,22 @@ void menu(koffiebord *&player_koffiebord){
 // de matrix en legenda geprint en zal wanneer er niet wordt gestopt het
 // menu opkomen
 int main(){
-	koffiebord *main_koffiebord = new koffiebord;
+	int h, b, p;
+	koffiebord *main_koffiebord;
+
   int arr[2];
 
 
 	while (true){
+		
+		cout << "Hoogte: ";
+		h = read_num(4);
+		cout << "Breedte: ";
+		b = read_num(4);
+		cout << "Percentage gevuld: ";
+		p = read_num(3);
 
+		main_koffiebord = new koffiebord(h,b,p);
 		menu(main_koffiebord);
 
     cout << "Wil je opnieuw spelen?" << endl <<
@@ -123,10 +136,7 @@ int main(){
     case 'n': case 'N':
       return 0;
     case 'j': case 'J':
-			main_koffiebord -> ~koffiebord();
-      main_koffiebord = new koffiebord;
       break;
-    
     default:
       break;
     }  

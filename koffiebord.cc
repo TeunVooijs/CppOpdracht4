@@ -17,13 +17,15 @@ bordvakje::bordvakje ( ) {
   }
 }//bordvakje::bordvakje
 
-koffiebord::koffiebord ( ) {
+koffiebord::koffiebord (int h, int b, int p) {
   spel_eind = false;
   srand(time(NULL));
   ingang = nullptr;
   vorige = nullptr;
-
-  afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
+  hoogte = h;
+  breedte = b;
+  percentage = p;
+  // afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
   ingang = bouwbord(); // Maakt het bord
   koffies(); // Plaatst de koffies
   zetten=0;
@@ -52,12 +54,28 @@ koffiebord::~koffiebord(){
 }//koffiebord::~koffiebord 
 
 bordvakje* koffiebord::copybord(){
-  koffiebord* newbord = new koffiebord();
+  bordvakje* stap_bord = bouwbord();
+  bordvakje* col_fol_main;
+  bordvakje* col_fol_stap;
+  bordvakje* copier_main;
+  bordvakje* copier_stap;
+  
+  col_fol_main = ingang;
 
+  while (col_fol_main){
+    copier_main = col_fol_main;
+    while (copier_main){
+      copier_stap -> aantal_buren = copier_main -> aantal_buren;
+      copier_stap -> marked = copier_main -> marked;
+      copier_stap -> flag = copier_main -> flag;
+      copier_stap -> geopend = copier_main -> geopend;
 
-
-
-
+      copier_stap = copier_stap -> buren[2];
+      copier_main = copier_main -> buren[2];
+    }
+    col_fol_stap = col_fol_stap -> buren[4];
+    col_fol_main = col_fol_main -> buren[4];
+  }
 }
 
 
