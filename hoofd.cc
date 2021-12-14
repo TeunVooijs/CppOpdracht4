@@ -86,7 +86,7 @@ void menu(koffiebord *&player_koffiebord){
       player_koffiebord -> czet();
       break;
     case 'c': case 'C':
-      player_koffiebord -> choofd(player_koffiebord);
+      // player_koffiebord -> choofd(player_koffiebord);
       return;
     case 'x': case 'X':
 	  	player_koffiebord -> ~koffiebord();

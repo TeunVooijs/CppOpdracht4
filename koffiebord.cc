@@ -24,14 +24,13 @@ koffiebord::koffiebord ( ) {
   vorige = nullptr;
 
   afmetingen(); // Vraagt afmetingen en percentage voor nieuwe bord op
-  bouwbord(); // Maakt het bord
+  ingang = bouwbord(); // Maakt het bord
   koffies(); // Plaatst de koffies
   zetten=0;
   gesloten_vakjes=0;
   geopende_vakjes=0;
   controle_geopende_vakjes=(breedte*hoogte)-aantal_koffies;
   aantal_vakjes= breedte * hoogte;
-
 }//koffiebord::koffiebord
 
 koffiebord::~koffiebord(){
@@ -41,19 +40,27 @@ koffiebord::~koffiebord(){
   while (ingang -> buren[4]){
     ingang = ingang -> buren[4];
   }
-
   while (ingang){
     hulp_deleter = ingang;
     ingang = ingang -> buren[0];
     while (hulp_deleter){
       deleter = hulp_deleter;
       hulp_deleter = hulp_deleter -> buren[2];
-      
       delete deleter;
-      
     }
   }
 }//koffiebord::~koffiebord 
+
+bordvakje* koffiebord::copybord(){
+  koffiebord* newbord = new koffiebord();
+
+
+
+
+
+}
+
+
 
 void koffiebord::drukaf ( ) {
   bordvakje* hulp;
@@ -113,9 +120,6 @@ void koffiebord::drukaf ( ) {
   else{
     cout << "Leeg" << endl;
   }
-
-
-
 }//koffiebord::drukaf
 
 
@@ -215,10 +219,10 @@ void koffiebord::koffies(){
 
 
 
-void koffiebord::maakrij(){    
+bordvakje* koffiebord::maakrij(){    
   bordvakje* p;
   bordvakje* hulp;
-  vorige = ingang;
+  vorige = nieuwste;
   hulp = nullptr;
 
   for (int i = 0; i < breedte; i++){
@@ -229,20 +233,35 @@ void koffiebord::maakrij(){
       p -> buren[2] -> buren[6] = p;
     hulp = p;
   }
-  ingang = hulp;
+  nieuwste = hulp;
+  return nieuwste;
+  // ingang = hulp
+  // while (vorige){
+  //   vorige -> buren[0] = hulp;
+  //   vorige -> buren[1] = hulp -> buren [2];
+  //   vorige -> buren[7] = hulp -> buren [6];
+  //   hulp -> buren[4] = vorige;
+  //   hulp -> buren[3] = vorige -> buren [2];
+  //   hulp -> buren[5] = vorige -> buren [6];
+  //   hulp = hulp -> buren[2];
+  //   vorige = vorige -> buren[2];
+  // }
+  // ingang = hulp;
 
 }
 
-void koffiebord::bouwbord(){
+bordvakje* koffiebord::bouwbord(){
+  bordvakje* hulp;
   for (int i = 0; i < hoogte; i++){
-    maakrij();
+    hulp = maakrij();
     ritsen();
   }
+  return hulp;
 }
 
 void koffiebord::ritsen(){
   bordvakje* hulp;
-  hulp = ingang;
+  hulp = nieuwste;
   while (vorige){
     vorige -> buren[0] = hulp;
     vorige -> buren[1] = hulp -> buren [2];
@@ -350,20 +369,20 @@ void koffiebord::koffie_eerste_zet(){
 }
 
 
-void koffiebord::choofd(){
-  crunner();
-}
+// void koffiebord::choofd(){
+//   crunner();
+// }
 
-void koffiebord::cdruk(){
-  for (int j = 0; j < 20; j++){
-    ofstream output ("U:\\Semester1\\ProgrammeerMethoden\\Opdracht4\\output.txt", ios::out);
+// void koffiebord::cdruk(){
+//   for (int j = 0; j < 20; j++){
+//     ofstream output ("U:\\Semester1\\ProgrammeerMethoden\\Opdracht4\\output.txt", ios::out);
     
-    output.put(max_zet[j]);
+//     output.put(max_zet[j]);
     
-    output.close();
+//     output.close();
     
-  }
-}
+//   }
+// }
 
 void koffiebord::crunner(){
   comp = true;
